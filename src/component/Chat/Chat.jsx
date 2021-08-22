@@ -2,6 +2,7 @@ import { InfoOutlined, StarBorderOutlined } from "@material-ui/icons";
 import React from "react";
 import { useSelector } from "react-redux";
 import { selectRoomId } from "../../features/appSlice";
+import { motion } from "framer-motion";
 import {
   ChatContainer,
   ChatMessages,
@@ -12,7 +13,6 @@ import {
 } from "./Chat.styles";
 import { ReactComponent as YourSvg } from "../../app/undraw.svg";
 import ChatInput from "./ChatInput";
-import { Typography } from "@material-ui/core";
 
 const Chat = () => {
   const roomId = useSelector(selectRoomId);
@@ -39,8 +39,34 @@ const Chat = () => {
         </>
       ) : (
         <NotSelected>
-          <Typography variant="h2">Please Select any channel</Typography>
-          <YourSvg />
+          <motion.h2
+            animate={{
+              y: [-5, 5],
+              transition: {
+                // duration: 1,
+                type: "spring",
+                bounce: 1,
+                repeat: Infinity,
+                repeatType: "reverse",
+              },
+            }}
+          >
+            Please Select any channel
+          </motion.h2>
+          <motion.div
+            animate={{
+              y: [5, -5],
+              transition: {
+                // duration: 1,
+                type: "spring",
+                bounce: 1,
+                repeat: Infinity,
+                repeatType: "reverse",
+              },
+            }}
+          >
+            <YourSvg />
+          </motion.div>
         </NotSelected>
       )}
     </ChatContainer>

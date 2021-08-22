@@ -67,7 +67,7 @@ export const NotSelected = styled.div`
   justify-content: space-between;
   flex-direction: column;
   align-items: center;
-  padding: 10px;
+  /* padding: 10px; */
   background-color: #a1a1a1;
 
   > h2 {

@@ -13,6 +13,7 @@ import {
 } from "./Chat.styles";
 import { ReactComponent as YourSvg } from "../../app/undraw.svg";
 import ChatInput from "./ChatInput";
+import { Typography } from "@material-ui/core";
 
 const Chat = () => {
   const roomId = useSelector(selectRoomId);
@@ -39,20 +40,7 @@ const Chat = () => {
         </>
       ) : (
         <NotSelected>
-          <motion.h2
-            animate={{
-              y: [-5, 5],
-              transition: {
-                // duration: 1,
-                type: "spring",
-                bounce: 1,
-                repeat: Infinity,
-                repeatType: "reverse",
-              },
-            }}
-          >
-            Please Select any channel
-          </motion.h2>
+          <Typography variant="h2">Please Select any channel</Typography>
           <motion.div
             animate={{
               y: [5, -5],

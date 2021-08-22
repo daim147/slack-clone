@@ -62,21 +62,28 @@ export const ChatInputContainer = styled.div`
 `;
 
 export const NotSelected = styled.div`
-  height: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-direction: column;
+  height: 100%;
+  overflow: scroll;
   align-items: center;
   /* padding: 10px; */
   background-color: #a1a1a1;
 
   > h2 {
     color: var(--slacK-color) !important;
-    font-size: 80px !important;
+    font-size: 6vw !important;
     font-weight: 700 !important;
+    margin-bottom: 20px !important;
+    white-space: nowrap !important;
   }
 
-  > svg {
-    height: 60vh;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  > div > svg {
+    height: 30vw;
   }
 `;

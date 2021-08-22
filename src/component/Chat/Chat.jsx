@@ -40,7 +40,7 @@ const Chat = () => {
         </>
       ) : (
         <NotSelected>
-          <Typography variant="h2">Please Select any channel</Typography>
+          <Typography variant="h2">Please Select any channel!</Typography>
           <motion.div
             animate={{
               y: [5, -5],

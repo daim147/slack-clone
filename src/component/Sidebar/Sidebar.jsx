@@ -1,9 +1,12 @@
 import { Typography } from "@material-ui/core";
 import {
+  Add,
+  Apps,
   BookmarkBorder,
   Create,
   Drafts,
   ExpandLess,
+  ExpandMore,
   FiberManualRecord,
   FileCopy,
   Inbox,
@@ -11,25 +14,27 @@ import {
   PeopleAlt,
 } from "@material-ui/icons";
 import React from "react";
-import App from "../../App";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { database } from "../../firebase";
 import {
   SideBarContainer,
   SideBarHeader,
   SideBarInfo,
   SideBarIcon,
-  SideBarOptions,
 } from "./Sidebar.styles";
 import SidebarOption from "./SidebarOption";
 
 const Sidebar = () => {
+  const [channels, loading, error] = useCollection(
+    database.collection("rooms")
+  );
+  console.log(channels);
   return (
-    <SideBarContainer container item xs={3}>
+    <SideBarContainer item xs={3}>
       <SideBarHeader
         container
         justifyContent="space-between"
         alignItems="center"
-        item
-        xs={12}
       >
         <SideBarInfo display="flex" flexDirection="column">
           <Typography variant="h2">Hello React</Typography>
@@ -43,16 +48,26 @@ const Sidebar = () => {
         </SideBarIcon>
       </SideBarHeader>
       {/*SIDE BAR OPTIONS  */}
-      <SideBarOptions xs={12} item container direction="column">
-        <SidebarOption Icons={InsertComment} title="Thread" />
-        <SidebarOption Icons={Inbox} title="Mention & reaction" />
-        <SidebarOption Icons={Drafts} title="Saved Items" />
-        <SidebarOption Icons={BookmarkBorder} title="Channel Browser" />
-        <SidebarOption Icons={PeopleAlt} title="People & user group" />
-        <SidebarOption Icons={App} title="Apps" />
-        <SidebarOption Icons={FileCopy} title="File Browser" />
-        <SidebarOption Icons={ExpandLess} title="Show less" />
-      </SideBarOptions>
+
+      <SidebarOption Icon={InsertComment} title="Thread" />
+      <SidebarOption Icon={Inbox} title="Mention & reaction" />
+      <SidebarOption Icon={Drafts} title="Saved Items" />
+      <SidebarOption Icon={BookmarkBorder} title="Channel Browser" />
+      <SidebarOption Icon={PeopleAlt} title="People & user group" />
+      <SidebarOption Icon={Apps} title="Apps" />
+      <SidebarOption Icon={FileCopy} title="File Browser" />
+      <SidebarOption Icon={ExpandLess} title="Show less" />
+      <hr />
+      <SidebarOption Icon={ExpandMore} title="Channels" />
+      <hr />
+      <SidebarOption addChannelOption Icon={Add} title="Add Channel" />
+      {channels?.docs.map((channel) => (
+        <SidebarOption
+          key={channel.id}
+          id={channel.id}
+          title={channel.data().name}
+        />
+      ))}
     </SideBarContainer>
   );
 };

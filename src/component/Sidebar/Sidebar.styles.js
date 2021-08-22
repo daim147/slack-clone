@@ -5,9 +5,20 @@ import { IconButton } from "@material-ui/core";
 export const SideBarContainer = styled(Grid)`
   padding-top: 60px;
   background-color: var(--slacK-color);
+  height: 100%;
+  padding-bottom: 40px;
   border-top: 1px solid #49274b;
   color: white;
   max-width: 260px !important;
+  overflow-y: scroll;
+
+  > hr {
+    margin: 10px 0;
+    border: 1px solid gray;
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 // ? SIDE BAR HEADER
@@ -47,5 +58,33 @@ export const SideBarIcon = styled(IconButton)`
 `;
 
 // ! SIDEBAR OPTIONS
-export const SideBarOptions = styled(Grid)``;
-export const Option = styled(Box)``;
+export const Option = styled(Box)`
+  font-size: 12px !important;
+  padding-left: 2px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+    background-color: #340336;
+  }
+
+  > h3 {
+    font-size: 15px !important;
+
+    font-weight: 500 !important;
+  }
+`;
+export const OptionChannel = styled.div`
+  display: flex;
+  padding: 10px 2px;
+  font-weight: 300;
+
+  > span {
+    font-size: 15px !important;
+    margin-right: 5px;
+  }
+  > h3 {
+    font-size: 15px !important;
+
+    font-weight: 500 !important;
+  }
+`;

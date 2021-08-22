@@ -5,6 +5,7 @@ export const GridHeader = styled(Grid)`
   color: white;
   background-color: var(--slacK-color);
   padding: 10px 0;
+  z-index: 999;
   position: fixed;
 `;
 

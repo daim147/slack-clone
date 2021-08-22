@@ -75,14 +75,17 @@ export const NotSelected = styled.div`
     color: var(--slacK-color) !important;
     font-size: 6vw !important;
     font-weight: 700 !important;
-    margin-bottom: 20px !important;
-    white-space: nowrap !important;
+    margin: 20px !important;
+    text-align: center;
+    flex: 0.2;
   }
 
   &::-webkit-scrollbar {
     display: none;
   }
-
+  > div {
+    flex: 0.8;
+  }
   > div > svg {
     height: 30vw;
   }

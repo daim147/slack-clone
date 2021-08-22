@@ -13,10 +13,27 @@ import {
 } from "./Chat.styles";
 import { ReactComponent as YourSvg } from "../../app/undraw.svg";
 import ChatInput from "./ChatInput";
+import {
+  useDocumentData,
+  useCollectionData,
+} from "react-firebase-hooks/firestore";
 import { Typography } from "@material-ui/core";
+import { database } from "../../firebase";
 
 const Chat = () => {
   const roomId = useSelector(selectRoomId);
+  const [channel, loadingCh] = useDocumentData(
+    roomId && database.collection("rooms").doc(roomId)
+  );
+  const [messages, loadingMe] = useCollectionData(
+    roomId &&
+      database
+        .collection("rooms")
+        .doc(roomId)
+        .collection("messages")
+        .orderBy("timeStamp", "asc")
+  );
+  console.log(channel, loadingCh, messages, loadingMe, roomId);
   return (
     <ChatContainer item xs={9}>
       {roomId ? (
@@ -24,7 +41,7 @@ const Chat = () => {
           <Header display="flex" justifyContent="space-between">
             <HeaderLeft display="flex" alignItems="center">
               <h4>
-                <strong># Room-Name</strong>
+                <strong># {channel?.name}</strong>
                 <StarBorderOutlined />
               </h4>
             </HeaderLeft>
@@ -36,7 +53,7 @@ const Chat = () => {
             </HeaderRight>
           </Header>
           <ChatMessages></ChatMessages>
-          <ChatInput channelName="Daim" channelId={roomId} />
+          <ChatInput channelName={channel?.name} channelId={roomId} />
         </>
       ) : (
         <NotSelected>

@@ -42,4 +42,41 @@ export const HeaderRight = styled(Box)`
 `;
 
 export const ChatMessages = styled.div``;
-export const ChatInput = styled.div``;
+export const ChatInputContainer = styled.div`
+  border-radius: 20px;
+
+  > form {
+    display: flex;
+    justify-content: center;
+  }
+
+  > form > input {
+    position: fixed;
+    bottom: 30px;
+    width: 60%;
+    font-size: 16px;
+    border: 1px solid gray;
+    padding: 20px;
+    outline: none;
+  }
+`;
+
+export const NotSelected = styled.div`
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  background-color: #a1a1a1;
+
+  > h2 {
+    color: var(--slacK-color) !important;
+    font-size: 80px !important;
+    font-weight: 700 !important;
+  }
+
+  > svg {
+    height: 60vh;
+  }
+`;

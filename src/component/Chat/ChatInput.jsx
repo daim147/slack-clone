@@ -1,10 +1,13 @@
 import React from "react";
 import firebase from "firebase";
-import { database } from "../../firebase/index";
+import { auth, database } from "../../firebase/index";
 import { ChatInputContainer } from "./Chat.styles";
 import { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const ChatInput = ({ channelName, channelId }) => {
+  const [user] = useAuthState(auth);
+
   const [inputValue, setInputValue] = useState("");
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -16,8 +19,8 @@ const ChatInput = ({ channelName, channelId }) => {
     database.collection("rooms").doc(channelId).collection("messages").add({
       message: inputValue,
       timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
-      user: "HUSNAIN SYED",
-      userImg: "dummy",
+      user: user.displayName,
+      userImg: user.photoURL,
     });
 
     setInputValue("");

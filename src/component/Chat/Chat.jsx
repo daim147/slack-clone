@@ -1,79 +1,79 @@
 import { InfoOutlined, StarBorderOutlined } from "@material-ui/icons";
 import React from "react";
-import { useSelector } from "react-redux";
-import { selectRoomId } from "../../features/appSlice";
-import { motion } from "framer-motion";
 import {
   ChatContainer,
-  ChatMessages,
+  Chatmessages,
+  ChatmessagesBottom,
   Header,
   HeaderLeft,
   HeaderRight,
-  NotSelected,
 } from "./Chat.styles";
-import { ReactComponent as YourSvg } from "../../app/undraw.svg";
 import ChatInput from "./ChatInput";
-import {
-  useDocumentData,
-  useCollectionData,
-} from "react-firebase-hooks/firestore";
-import { Typography } from "@material-ui/core";
-import { database } from "../../firebase";
+import { useParams, useHistory } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getMessages, getRequiredChannel } from "../../features/channelDetails";
+import Messages from "./Messages";
+import { useRef } from "react";
+import { AnimateSharedLayout } from "framer-motion";
 
 const Chat = () => {
-  const roomId = useSelector(selectRoomId);
-  const [channel, loadingCh] = useDocumentData(
-    roomId && database.collection("rooms").doc(roomId)
+  const { roomId } = useParams();
+  const history = useHistory();
+  const selectedChannel = useSelector(
+    (state) => state.channels.selectedChannel
   );
-  const [messages, loadingMe] = useCollectionData(
-    roomId &&
-      database
-        .collection("rooms")
-        .doc(roomId)
-        .collection("messages")
-        .orderBy("timeStamp", "asc")
+  const selectedChannelMessages = useSelector(
+    (state) => state.channels.selectedChannelMessages
   );
-  console.log(channel, loadingCh, messages, loadingMe, roomId);
+  const dispatch = useDispatch();
+  const bottom = useRef(null);
+  useEffect(() => {
+    // ! GETTING CHANNEL BASED ON ROOMID IN URL
+    (async () => {
+      await dispatch(getRequiredChannel(roomId))
+        .unwrap()
+        .catch((error) => {
+          alert(error);
+          history.push("/");
+        });
+
+      // ! GETTING MESSAGES BASED ON ROOMID IN URL
+      await dispatch(getMessages(roomId));
+    })();
+  }, [dispatch, roomId, history]);
+
+  useEffect(() => {
+    bottom?.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [selectedChannelMessages]);
+
   return (
     <ChatContainer item xs={9}>
-      {roomId ? (
-        <>
-          <Header display="flex" justifyContent="space-between">
-            <HeaderLeft display="flex" alignItems="center">
-              <h4>
-                <strong># {channel?.name}</strong>
-                <StarBorderOutlined />
-              </h4>
-            </HeaderLeft>
-            <HeaderRight>
-              <p>
-                <InfoOutlined />
-                Detail
-              </p>
-            </HeaderRight>
-          </Header>
-          <ChatMessages></ChatMessages>
-          <ChatInput channelName={channel?.name} channelId={roomId} />
-        </>
-      ) : (
-        <NotSelected>
-          <Typography variant="h2">Please Select any channel!</Typography>
-          <motion.div
-            animate={{
-              y: [5, -5],
-              transition: {
-                // duration: 1,
-                type: "spring",
-                bounce: 1,
-                repeat: Infinity,
-                repeatType: "reverse",
-              },
-            }}
-          >
-            <YourSvg />
-          </motion.div>
-        </NotSelected>
-      )}
+      <Header display="flex" justifyContent="space-between">
+        <HeaderLeft display="flex" alignItems="center">
+          <h4>
+            <strong># {selectedChannel?.name}</strong>
+            <StarBorderOutlined />
+          </h4>
+        </HeaderLeft>
+        <HeaderRight>
+          <p>
+            <InfoOutlined />
+            Detail
+          </p>
+        </HeaderRight>
+      </Header>
+      <AnimateSharedLayout>
+        <Chatmessages layout transition={{ type: "spring", bounce: 0.4 }}>
+          {selectedChannelMessages?.map(({ id, ...data }) => (
+            <Messages key={id} {...data} />
+          ))}
+        </Chatmessages>
+      </AnimateSharedLayout>
+      <ChatmessagesBottom ref={bottom} />
+      <ChatInput channelName={selectedChannel?.name} channelId={roomId} />
     </ChatContainer>
   );
 };

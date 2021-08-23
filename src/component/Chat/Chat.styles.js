@@ -1,10 +1,11 @@
 import { Box, Grid } from "@material-ui/core";
+import { motion } from "framer-motion";
 import styled from "styled-components";
 
 export const ChatContainer = styled(Grid)`
   padding-top: 60px;
   height: 100%;
-  overflow-y: scroll;
+  overflow: scroll;
   max-width: 100% !important;
   flex-grow: 1 !important;
   &::-webkit-scrollbar {
@@ -41,7 +42,10 @@ export const HeaderRight = styled(Box)`
   }
 `;
 
-export const ChatMessages = styled.div``;
+export const Chatmessages = styled(motion.div)``;
+export const ChatmessagesBottom = styled.div`
+  padding-bottom: 150px;
+`;
 export const ChatInputContainer = styled.div`
   border-radius: 20px;
 
@@ -61,13 +65,12 @@ export const ChatInputContainer = styled.div`
   }
 `;
 
-export const NotSelected = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: column;
+export const NotSelected = styled(Grid)`
+  overflow: scroll !important;
+  padding-top: 60px;
   height: 100%;
-  overflow: scroll;
-  align-items: center;
+  max-width: 100% !important;
+  flex-grow: 1 !important;
   /* padding: 10px; */
   background-color: #a1a1a1;
 
@@ -77,16 +80,37 @@ export const NotSelected = styled.div`
     font-weight: 700 !important;
     margin: 20px !important;
     text-align: center;
-    flex: 0.2;
   }
 
   &::-webkit-scrollbar {
     display: none;
   }
   > div {
-    flex: 0.8;
+    width: 100% !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   > div > svg {
-    height: 30vw;
+    height: 35vw;
+  }
+`;
+
+export const MessageContainer = styled(motion.div)`
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  margin: 10px 0;
+`;
+export const MessageInfo = styled.div`
+  padding-left: 10px;
+  > h5 {
+    color: #868383;
+  }
+  > h5 > span {
+    color: gray;
+    font-weight: 500;
+    font-size: 14px;
+    margin-left: 4px;
   }
 `;

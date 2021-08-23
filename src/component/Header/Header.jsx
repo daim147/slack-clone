@@ -8,8 +8,12 @@ import {
   HeaderMiddle,
   HeaderRight,
 } from "./Header.styles";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../../firebase";
 
 const Header = () => {
+  const [user] = useAuthState(auth);
+
   return (
     <GridHeader container alignItems="center">
       {/* LOGO COMPONENT */}
@@ -21,7 +25,11 @@ const Header = () => {
         item
         xs={3}
       >
-        <HeaderAvatar />
+        <HeaderAvatar
+          onClick={() => auth.signOut()}
+          src={user?.photoURL}
+          alt={user?.displayName}
+        />
         <AccessTime />
       </HeaderLeft>
       {/* SEARCH COMPONENT */}

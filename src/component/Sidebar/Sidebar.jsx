@@ -14,8 +14,11 @@ import {
   PeopleAlt,
 } from "@material-ui/icons";
 import React from "react";
-import { useCollection } from "react-firebase-hooks/firestore";
-import { database } from "../../firebase";
+import { useEffect } from "react";
+// import { useCollection } from "react-firebase-hooks/firestore";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchChannels } from "../../features/channelDetails";
+// import { database } from "../../firebase";
 import {
   SideBarContainer,
   SideBarHeader,
@@ -25,9 +28,16 @@ import {
 import SidebarOption from "./SidebarOption";
 
 const Sidebar = () => {
-  const [channels, loading, error] = useCollection(
-    database.collection("rooms")
-  );
+  // const [channels, loading, error] = useCollection(
+  //   database.collection("rooms")
+  // );
+  const dispatch = useDispatch();
+  const channels = useSelector((state) => state.channels.channels);
+
+  useEffect(() => {
+    dispatch(fetchChannels());
+  }, [dispatch]);
+
   console.log(channels);
   return (
     <SideBarContainer item xs={3}>
@@ -61,12 +71,8 @@ const Sidebar = () => {
       <SidebarOption Icon={ExpandMore} title="Channels" />
       <hr />
       <SidebarOption addChannelOption Icon={Add} title="Add Channel" />
-      {channels?.docs.map((channel) => (
-        <SidebarOption
-          key={channel.id}
-          id={channel.id}
-          title={channel.data().name}
-        />
+      {channels?.map((channel) => (
+        <SidebarOption key={channel.id} id={channel.id} title={channel.name} />
       ))}
     </SideBarContainer>
   );

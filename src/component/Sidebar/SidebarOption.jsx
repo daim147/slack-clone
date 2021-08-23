@@ -2,18 +2,19 @@ import { Snackbar, Typography } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import React from "react";
 import ReactDOM from "react-dom";
-import { useDispatch } from "react-redux";
-import { enterRoom } from "../../features/appSlice";
+import firebase from "firebase";
+
 import { database } from "../../firebase";
 import FormDialog from "../Modal/Modal";
 
 import { Option, OptionChannel } from "./Sidebar.styles";
+import { useHistory } from "react-router-dom";
 
 const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
   const [openModal, setOpenModal] = React.useState(false);
   const [name, setName] = React.useState("");
   const [popper, setPopper] = React.useState(false);
-  const dispatch = useDispatch();
+  const history = useHistory();
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
@@ -30,6 +31,7 @@ const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
       .collection("rooms")
       .add({
         name,
+        timeStamp: firebase.firestore.FieldValue.serverTimestamp(),
       })
       .then(() => {
         setName("");
@@ -44,11 +46,7 @@ const SidebarOption = ({ Icon, title, addChannelOption, id }) => {
   };
   const selectChannel = () => {
     if (id) {
-      dispatch(
-        enterRoom({
-          roomId: id,
-        })
-      );
+      history.push(`/room/${id}`);
     }
   };
 

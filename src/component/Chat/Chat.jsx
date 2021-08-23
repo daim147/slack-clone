@@ -66,7 +66,10 @@ const Chat = () => {
         </HeaderRight>
       </Header>
       <AnimateSharedLayout>
-        <Chatmessages layout transition={{ type: "spring", bounce: 0.4 }}>
+        <Chatmessages
+          layout
+          transition={{ type: "spring", bounce: 0.4, duration: 0.2 }}
+        >
           {selectedChannelMessages?.map(({ id, ...data }) => (
             <Messages key={id} {...data} />
           ))}

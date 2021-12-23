@@ -15,7 +15,15 @@
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="modal"></div>
   <div id="root"></div>
-
+<script>
+  window.onUsersnapCXLoad = function(api) {
+    api.init();
+  }
+  var script = document.createElement('script');
+  script.defer = 1;
+  script.src = 'https://widget.usersnap.com/global/load/8a7ad49f-9479-4824-9d55-af6729dfd54d?onload=onUsersnapCXLoad';
+  document.getElementsByTagName('head')[0].appendChild(script);
+</script>
 </body>
 
 </html>
